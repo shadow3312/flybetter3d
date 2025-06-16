@@ -1,6 +1,10 @@
+import Home from "@/components/pages/home";
+import { DataService } from "@/lib/data/data-service";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const aircraftData = await DataService.getAircraft()
+  const flightsData = await DataService.getFlights()
   return (
-    <div>OK</div>
+    <Home aircraft={aircraftData} flights={flightsData} />
   );
 }
