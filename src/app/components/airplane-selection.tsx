@@ -2,17 +2,13 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Text,
-  Plane,
-  Cloud,
-  Sky,
-} from "@react-three/drei";
+import { OrbitControls, Text, Plane, Cloud, Sky } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import type { Aircraft } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { Airplane } from "@/components/models/airplane-model";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface AirplaneSelectionProps {
   aircraft: Aircraft[];
@@ -176,7 +172,16 @@ export default function AirplaneSelection({
                 </Text>
               }
             >
-              {/* Airplane model */}
+              <Airplane
+                position={getAircraftPosition(index)}
+                rotation={getAirCraftRotation(airplane.id)}
+                scale={getAircraftScale(airplane.id)}
+                color={hoveredAirplane === airplane.id ? "#0ea5e9" : "#64748b"}
+                id={airplane.id}
+                onClick={() => handleAirplaneClick(airplane)}
+                onPointerOver={() => setHoveredAirplane(airplane.id)}
+                onPointerOut={() => setHoveredAirplane(null)}
+              />
               <Text
                 position={[
                   getAircraftPosition(index)[0],
@@ -233,6 +238,64 @@ export default function AirplaneSelection({
             ) : (
               <div>Loading weather data...</div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {selectedAirplane && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <Card className="w-[400px] bg-black/80 backdrop-blur-sm border-white/20">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">✈️</span>
+                <h3 className="text-xl font-bold text-white">
+                  {selectedAirplane.name}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-white/10 p-3 rounded-lg">
+                  <p className="text-sm text-gray-300">Model</p>
+                  <p className="text-white font-semibold">
+                    {selectedAirplane.model}
+                  </p>
+                </div>
+                <div className="bg-white/10 p-3 rounded-lg">
+                  <p className="text-sm text-gray-300">Manufacturer</p>
+                  <p className="text-white font-semibold">
+                    {selectedAirplane.manufacturer}
+                  </p>
+                </div>
+                <div className="bg-white/10 p-3 rounded-lg">
+                  <p className="text-sm text-gray-300">Total seats</p>
+                  <p className="text-white font-semibold">
+                    {selectedAirplane.totalSeats}
+                  </p>
+                </div>
+                <div className="bg-white/10 p-3 rounded-lg">
+                  <p className="text-sm text-gray-300">Configuration</p>
+                  <p className="text-white font-semibold">
+                    {selectedAirplane.seatsPerRow} by row
+                  </p>
+                </div>
+              </div>
+
+              <button
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105"
+                onClick={handleConfirmSelection}
+              >
+                🎫 See all available seats
+              </button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      <div className="absolute bottom-6 left-6">
+        <div className="bg-black/70 backdrop-blur-sm p-3 rounded-lg border border-white/20">
+          <div className="text-white text-xs space-y-1">
+            <div>🖱️ Left clic + slide: Rotation</div>
+            <div>🔍 Molette: Zoom</div>
+            <div>👆 Clic on a plane: Select</div>
           </div>
         </div>
       </div>

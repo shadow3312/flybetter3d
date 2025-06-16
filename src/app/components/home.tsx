@@ -1,6 +1,6 @@
 "use client";
 
-import type { Aircraft, Flight, Seat } from "@/lib/types";
+import type { Aircraft, Flight } from "@/lib/types";
 import { useAtom } from "jotai";
 import { selectedAircraftAtom, selectedFlightAtom } from "@/state/atoms";
 import AirplaneSelection from "./airplane-selection";
