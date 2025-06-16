@@ -1,22 +1,25 @@
 "use client";
 
-import {
-  showReservationModalAtom,
-  selectedFlightAtom,
-} from "@/state/atoms";
+import { showReservationModalAtom, selectedFlightAtom } from "@/state/atoms";
 import { Aircraft, Passenger, Seat } from "@/lib/types";
 import { useAtom, useAtomValue } from "jotai";
 import React, { useState } from "react";
 import AirplaneInterior from "./airplane-interior";
+import ReservationModal from "./reservation-modal";
 
 type Props = {
   flightId: string;
   aircraftData: Aircraft;
   seatsData: Seat[];
-  passengersData: Passenger[]
+  passengersData: Passenger[];
 };
 
-export default function FlightDetail({ flightId, aircraftData, seatsData, passengersData }: Props) {
+export default function FlightDetail({
+  flightId,
+  aircraftData,
+  seatsData,
+  passengersData,
+}: Props) {
   const [selectedSeat, setSelectedSeat] = useState<Partial<Seat> | null>(null);
   const [showReservationModal, setShowReservationModal] = useAtom(
     showReservationModalAtom
@@ -29,21 +32,27 @@ export default function FlightDetail({ flightId, aircraftData, seatsData, passen
   };
 
   return (
-    (
-      <div className="w-full h-full">
-        <div className="flex-1">
-          {selectedFlight && (
-            <AirplaneInterior
-              aircraft={aircraftData}
-              seats={seatsData}
-              passengers={passengersData}
-              flightId={flightId}
-              onSeatSelect={handleSeatSelect}
-            />
-          )}
-        </div>
-
+    <div className="w-full h-full">
+      <div className="flex-1">
+        {selectedFlight && (
+          <AirplaneInterior
+            aircraft={aircraftData}
+            seats={seatsData}
+            passengers={passengersData}
+            flightId={flightId}
+            onSeatSelect={handleSeatSelect}
+          />
+        )}
       </div>
-    )
+
+      {showReservationModal && selectedSeat && selectedFlight && (
+        <ReservationModal
+          seat={selectedSeat}
+          flight={selectedFlight}
+          aircraft={aircraftData}
+          onCancel={() => setShowReservationModal(false)}
+        />
+      )}
+    </div>
   );
 }
