@@ -341,7 +341,7 @@ We welcome contributions! Please follow these steps:
 
 
 <div align="center">
-  <p>Made with ❤️ by the AirSeat 3D Team</p>
+  <p>Made with ❤️ by Zer</p>
   <p>
     <a href="https://github.com/shadow3312/flybetter">⭐ Star on GitHub</a> |
     <a href="https://twitter.com/shuruzer">🐦 Follow on Twitter</a> |
