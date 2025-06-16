@@ -281,7 +281,7 @@ export default function AirplaneSelection({
               </div>
 
               <button
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105 cursor-pointer"
                 onClick={handleConfirmSelection}
               >
                 🎫 See all available seats

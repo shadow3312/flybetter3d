@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "^6.9.0",
     "@prisma/extension-accelerate": "^2.0.1",
+    "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "class-variance-authority": "^0.7.1",

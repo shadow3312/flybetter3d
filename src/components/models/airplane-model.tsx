@@ -29,7 +29,6 @@ export function Airplane({
   position,
   rotation,
   scale,
-  color,
   id,
   onClick,
   onPointerOver,

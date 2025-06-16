@@ -7,6 +7,7 @@ import {
 import { Aircraft, Passenger, Seat } from "@/lib/types";
 import { useAtom, useAtomValue } from "jotai";
 import React, { useState } from "react";
+import AirplaneInterior from "./airplane-interior";
 
 type Props = {
   flightId: string;
@@ -16,13 +17,13 @@ type Props = {
 };
 
 export default function FlightDetail({ flightId, aircraftData, seatsData, passengersData }: Props) {
-  const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
+  const [selectedSeat, setSelectedSeat] = useState<Partial<Seat> | null>(null);
   const [showReservationModal, setShowReservationModal] = useAtom(
     showReservationModalAtom
   );
   const selectedFlight = useAtomValue(selectedFlightAtom);
 
-  const handleSeatSelect = (seat: Seat) => {
+  const handleSeatSelect = (seat: Partial<Seat>) => {
     setSelectedSeat(seat);
     setShowReservationModal(true);
   };
@@ -32,7 +33,13 @@ export default function FlightDetail({ flightId, aircraftData, seatsData, passen
       <div className="w-full h-full">
         <div className="flex-1">
           {selectedFlight && (
-            <div>Interior {selectedFlight.id}</div>
+            <AirplaneInterior
+              aircraft={aircraftData}
+              seats={seatsData}
+              passengers={passengersData}
+              flightId={flightId}
+              onSeatSelect={handleSeatSelect}
+            />
           )}
         </div>
 
