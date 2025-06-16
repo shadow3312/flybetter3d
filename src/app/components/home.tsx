@@ -3,6 +3,7 @@
 import type { Aircraft, Flight, Seat } from "@/lib/types";
 import { useAtom } from "jotai";
 import { selectedAircraftAtom, selectedFlightAtom } from "@/state/atoms";
+import AirplaneSelection from "./airplane-selection";
 
 type HomeProps = {
   aircraft: Aircraft[];
@@ -25,5 +26,6 @@ export default function Home({ aircraft, flights }: HomeProps) {
     }
   };
 
-  return <div>Airplane selection</div>;
+  return <AirplaneSelection aircraft={aircraft} onSelect={handleAircraftSelect} />
+
 }

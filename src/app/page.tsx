@@ -1,4 +1,4 @@
-import Home from "@/components/pages/home";
+import Home from "@/app/components/home";
 import { DataService } from "@/lib/data/data-service";
 
 export default async function HomePage() {
