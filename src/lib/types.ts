@@ -15,7 +15,7 @@ export interface Aircraft {
 
 export interface SeatClass {
   id: string
-  name: "first" | "business" | "economy"
+  name: string
   displayName: string
   basePrice: number
   legRoom: number

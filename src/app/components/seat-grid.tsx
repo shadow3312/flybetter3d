@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Text } from "@react-three/drei";
 import type { Seat, Passenger } from "@/lib/types";
 import { SeatModel } from "../../components/models/seat-model";
+import { PassengerManager } from "./passenger-manager";
 
 interface SeatGridProps {
   rows: number;
@@ -26,6 +27,8 @@ export function SeatGrid({
   onSeatHover,
   firstClassRows = 0,
   businessClassRows = 0,
+  showPassengers = true,
+  passengers
 }: SeatGridProps) {
   const [hoveredSeatId, setHoveredSeatId] = useState<string | null>(null);
 
@@ -200,6 +203,15 @@ export function SeatGrid({
           />
         );
       })}
+
+      {/* Passengers */}
+      {showPassengers && (
+        <PassengerManager
+          seats={seats.filter((seat) => !seat.isAvailable)}
+          passengers={passengers}
+          rowSpacing={rowSpacing}
+        />
+      )}
     </group>
   );
 }
