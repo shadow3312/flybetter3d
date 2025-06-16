@@ -1,0 +1,44 @@
+[
+  {
+    "id": "boeing-737",
+    "name": "Boeing 737",
+    "model": "737-800",
+    "manufacturer": "Boeing",
+    "totalSeats": 150,
+    "rows": 25,
+    "seatsPerRow": 6,
+    "aisleAfter": 3,
+    "cabinWidth": 3.5,
+    "cabinLength": 20,
+    "windowRows": 8,
+    "imageUrl": "/assets/images/boeing-737.jpg"
+  },
+  {
+    "id": "airbus-a380",
+    "name": "Airbus A380",
+    "model": "A320neo",
+    "manufacturer": "Airbus",
+    "totalSeats": 180,
+    "rows": 30,
+    "seatsPerRow": 6,
+    "aisleAfter": 3,
+    "cabinWidth": 3.5,
+    "cabinLength": 24,
+    "windowRows": 10,
+    "imageUrl": "/assets/images/airbus-a320.jpg"
+  },
+  {
+    "id": "boeing-787",
+    "name": "Boeing 787",
+    "model": "787-9 Dreamliner",
+    "manufacturer": "Boeing",
+    "totalSeats": 250,
+    "rows": 35,
+    "seatsPerRow": 9,
+    "aisleAfter": 3,
+    "cabinWidth": 5.5,
+    "cabinLength": 28,
+    "windowRows": 12,
+    "imageUrl": "/assets/images/boeing-787.jpg"
+  }
+]

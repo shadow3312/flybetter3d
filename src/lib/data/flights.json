@@ -1,0 +1,32 @@
+[
+  {
+    "id": "flight-1",
+    "aircraftId": "boeing-737",
+    "flightNumber": "AA1234",
+    "departureAirport": "Brazzaville",
+    "arrivalAirport": "Pointe-Noire",
+    "departureTime": "2025-08-15T08:00:00Z",
+    "arrivalTime": "2025-08-15T11:30:00Z",
+    "status": "scheduled"
+  },
+  {
+    "id": "flight-2",
+    "aircraftId": "airbus-a380",
+    "flightNumber": "UA5678",
+    "departureAirport": "Paris",
+    "arrivalAirport": "Libreville",
+    "departureTime": "2025-08-16T10:15:00Z",
+    "arrivalTime": "2025-08-16T16:45:00Z",
+    "status": "scheduled"
+  },
+  {
+    "id": "flight-3",
+    "aircraftId": "boeing-787",
+    "flightNumber": "DL9012",
+    "departureAirport": "Pointe-Noire",
+    "arrivalAirport": "Nairobi",
+    "departureTime": "2025-06-17T19:30:00Z",
+    "arrivalTime": "2025-06-18T08:45:00Z",
+    "status": "scheduled"
+  }
+]

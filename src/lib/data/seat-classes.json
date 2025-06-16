@@ -1,0 +1,51 @@
+[
+  {
+    "id": "first",
+    "name": "first",
+    "displayName": "First Class",
+    "basePrice": 500,
+    "legRoom": 60,
+    "recline": 180,
+    "width": 22,
+    "amenities": [
+      "Lie-flat seat",
+      "Premium dining",
+      "Dedicated flight attendant",
+      "Luxury amenity kit",
+      "Priority boarding",
+      "Lounge access",
+      "Complimentary pajamas",
+      "Premium entertainment"
+    ],
+    "color": "#8b5cf6"
+  },
+  {
+    "id": "business",
+    "name": "business",
+    "displayName": "Business Class",
+    "basePrice": 300,
+    "legRoom": 45,
+    "recline": 140,
+    "width": 20,
+    "amenities": [
+      "Reclining seat",
+      "Enhanced dining",
+      "Priority boarding",
+      "Amenity kit",
+      "Lounge access",
+      "Premium entertainment"
+    ],
+    "color": "#f59e0b"
+  },
+  {
+    "id": "economy",
+    "name": "economy",
+    "displayName": "Economy Class",
+    "basePrice": 150,
+    "legRoom": 32,
+    "recline": 110,
+    "width": 17,
+    "amenities": ["Standard seat", "Complimentary meal", "In-flight entertainment"],
+    "color": "#10b981"
+  }
+]
