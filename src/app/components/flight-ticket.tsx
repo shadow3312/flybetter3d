@@ -314,7 +314,7 @@ export default function FlightTicket({
               </div>
               <div>
                 <p className="font-semibold mb-1">Contact</p>
-                <p>support@airseat3d.com | +1 (555) 123-4567</p>
+                <p>eludeceti@gmail.com | +242 0404246667</p>
               </div>
             </div>
           </div>
