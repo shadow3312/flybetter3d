@@ -345,6 +345,6 @@ We welcome contributions! Please follow these steps:
   <p>
     <a href="https://github.com/shadow3312/flybetter">⭐ Star on GitHub</a> |
     <a href="https://twitter.com/shuruzer">🐦 Follow on Twitter</a> |
-    <a href="https://flybetter.vercel.app">🌐 Visit Website</a>
+    <a href="https://flybetter3d.vercel.app">🌐 Visit Website</a>
   </p>
 </div>
