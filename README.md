@@ -13,6 +13,10 @@
   <p>A cutting-edge web application that revolutionizes airline seat reservation through interactive 3D visualization, realistic cabin environments, and professional ticket generation.</p>
 </div>
 
+<p>Live <a href="https://flybetter3d.vercel.app/">here</a></p>
+
+<img src="https://flybetter3d.vercel.app/screen.png" />
+
 ---
 
 ## 🌟 Features
@@ -160,7 +164,7 @@ pnpm start
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 airseat-3d/
 ├── app/                          # Next.js App Router
 │   ├── globals.css              # Global styles
@@ -202,7 +206,7 @@ airseat-3d/
 ├── tailwind.config.ts         # Tailwind configuration
 ├── tsconfig.json             # TypeScript configuration
 └── README.md                 # Project documentation
-\`\`\`
+```
 
 ## 🎨 Customization
 
