@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { Text } from "@react-three/drei";
 import type { Seat, Passenger } from "@/lib/types";
 import { SeatModel } from "../../components/models/seat-model";
@@ -19,7 +19,7 @@ interface SeatGridProps {
   showPassengers?: boolean;
 }
 
-export function SeatGrid({
+export const SeatGrid = memo(function SeatGrid({
   rows,
   seatsPerRow,
   seats,
@@ -28,7 +28,7 @@ export function SeatGrid({
   firstClassRows = 0,
   businessClassRows = 0,
   showPassengers = true,
-  passengers
+  passengers,
 }: SeatGridProps) {
   const [hoveredSeatId, setHoveredSeatId] = useState<string | null>(null);
 
@@ -36,9 +36,13 @@ export function SeatGrid({
   const seatWidth = 0.6;
   const rowSpacing = 0.8;
 
-  const totalWidth = seatsPerRow * seatWidth + aisleWidth;
+  const totalWidth = useMemo(
+    () => seatsPerRow * seatWidth + aisleWidth,
+    [seatsPerRow],
+  );
 
-  const renderSectionDividers = () => {
+  // Memoize section dividers
+  const sectionDividers = useMemo(() => {
     const dividers = [];
 
     if (firstClassRows > 0) {
@@ -51,7 +55,7 @@ export function SeatGrid({
         >
           <boxGeometry args={[totalWidth + 0.2, 0.05, 0.05]} />
           <meshLambertMaterial color="#8b5cf6" />
-        </mesh>
+        </mesh>,
       );
     }
 
@@ -65,14 +69,15 @@ export function SeatGrid({
         >
           <boxGeometry args={[totalWidth + 0.2, 0.05, 0.05]} />
           <meshLambertMaterial color="#f59e0b" />
-        </mesh>
+        </mesh>,
       );
     }
 
     return dividers;
-  };
+  }, [firstClassRows, businessClassRows, rowSpacing, totalWidth]);
 
-  const renderSectionLabels = () => {
+  // Memoize section labels
+  const sectionLabels = useMemo(() => {
     const labels = [];
 
     if (firstClassRows > 0) {
@@ -88,7 +93,7 @@ export function SeatGrid({
           rotation={[0, 0, Math.PI / 2]}
         >
           FIRST CLASS
-        </Text>
+        </Text>,
       );
     }
 
@@ -106,7 +111,7 @@ export function SeatGrid({
           rotation={[0, 0, Math.PI / 2]}
         >
           BUSINESS
-        </Text>
+        </Text>,
       );
     }
 
@@ -127,12 +132,58 @@ export function SeatGrid({
           rotation={[0, 0, Math.PI / 2]}
         >
           ECONOMY
-        </Text>
+        </Text>,
       );
     }
 
     return labels;
-  };
+  }, [firstClassRows, businessClassRows, rows, rowSpacing, totalWidth]);
+
+  // Memoize seat positions
+  const seatPositions = useMemo(() => {
+    return seats.map((seat) => ({
+      seat,
+      position: [seat.position.x, seat.position.y, seat.position.z] as [
+        number,
+        number,
+        number,
+      ],
+    }));
+  }, [seats]);
+
+  // Memoize handlers
+  const handleSeatClick = useCallback(
+    (seat: Seat) => {
+      onSeatClick(seat);
+    },
+    [onSeatClick],
+  );
+
+  const handleSeatHover = useCallback(
+    (seat: Seat | null) => {
+      onSeatHover(seat);
+    },
+    [onSeatHover],
+  );
+
+  const handleSeatPointerOver = useCallback(
+    (seat: Seat) => {
+      setHoveredSeatId(seat.id);
+      onSeatHover(seat);
+    },
+    [onSeatHover],
+  );
+
+  const handleSeatPointerOut = useCallback(() => {
+    setHoveredSeatId(null);
+    onSeatHover(null);
+  }, [onSeatHover]);
+
+  // Memoize occupied seats for passengers
+  const occupiedSeats = useMemo(
+    () => seats.filter((seat) => !seat.isAvailable),
+    [seats],
+  );
 
   return (
     <group name="seat-grid">
@@ -154,9 +205,9 @@ export function SeatGrid({
         <meshLambertMaterial color="#475569" />
       </mesh>
 
-      {renderSectionDividers()}
+      {sectionDividers}
 
-      {renderSectionLabels()}
+      {sectionLabels}
 
       {/* Row numbers */}
       {Array.from({ length: rows }).map((_, rowIndex) => (
@@ -179,39 +230,25 @@ export function SeatGrid({
       </mesh>
 
       {/* Seats */}
-      {seats.map((seat) => {
-        const position: [number, number, number] = [
-          seat.position.x,
-          seat.position.y,
-          seat.position.z,
-        ];
-
-        return (
-          <SeatModel
-            key={seat.id}
-            seat={seat}
-            position={position}
-            onClick={onSeatClick}
-            onPointerOver={(seat) => {
-              setHoveredSeatId(seat.id);
-              onSeatHover(seat);
-            }}
-            onPointerOut={() => {
-              setHoveredSeatId(null);
-              onSeatHover(null);
-            }}
-          />
-        );
-      })}
+      {seatPositions.map(({ seat, position }) => (
+        <SeatModel
+          key={seat.id}
+          seat={seat}
+          position={position}
+          onClick={handleSeatClick}
+          onPointerOver={handleSeatPointerOver}
+          onPointerOut={handleSeatPointerOut}
+        />
+      ))}
 
       {/* Passengers */}
       {showPassengers && (
         <PassengerManager
-          seats={seats.filter((seat) => !seat.isAvailable)}
+          seats={occupiedSeats}
           passengers={passengers}
           rowSpacing={rowSpacing}
         />
       )}
     </group>
   );
-}
+});

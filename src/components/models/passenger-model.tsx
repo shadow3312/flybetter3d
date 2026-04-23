@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect, memo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, useGLTF } from "@react-three/drei";
 import type { Group } from "three";
@@ -19,7 +19,11 @@ const passengerModels = {
   standing: [`${glbUrl}/assets/3d/passengers/man2.glb`],
   sitting: [`${glbUrl}/assets/3d/passengers/man.glb`],
 };
-export function PassengerModel({
+
+// Cache for passenger models - loaded once and reused
+const passengerModelCache = new Map<string, any>();
+
+export const PassengerModel = memo(function PassengerModel({
   position,
   rotation = [0, 0, 0],
   seatId,
@@ -35,16 +39,35 @@ export function PassengerModel({
     const models = passengerModels[activity];
     const idx =
       Math.abs(
-        passenger.id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0)
+        passenger.id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0),
       ) % models.length;
     return models[idx];
   }, [passenger]);
 
+  // Load GLTF and cache the model
   const { scene } = useGLTF(modelUrl);
 
-  const model = scene.clone();
+  // Cache the cloned model per URL
+  const model = useMemo(() => {
+    if (!passengerModelCache.has(modelUrl)) {
+      const cloned = scene.clone();
+      cloned.traverse((child: any) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+        }
+      });
+      passengerModelCache.set(modelUrl, cloned);
+    }
+    return passengerModelCache.get(modelUrl);
+  }, [scene, modelUrl]);
 
-  const animationParams = (() => {
+  // Clone for this specific passenger instance
+  const passengerModel = useMemo(() => {
+    return model.clone();
+  }, [model]);
+
+  // Memoize animation params
+  const animationParams = useMemo(() => {
     switch (passenger.activity) {
       case "sleeping":
         return { headTilt: -0.4, lookFrequency: 0.1, lookAmount: 0.05 };
@@ -53,7 +76,7 @@ export function PassengerModel({
       default:
         return { headTilt: 0, lookFrequency: 0.7, lookAmount: 0.3 };
     }
-  })();
+  }, [passenger.activity]);
 
   // Handle animations
   useFrame((state) => {
@@ -124,7 +147,7 @@ export function PassengerModel({
       onClick={() => setShowInfo(!showInfo)}
     >
       <primitive
-        object={model}
+        object={passengerModel}
         scale={0.5}
         rotation={[0, 0, 0]}
         position={[0, 0.1, 0]}
@@ -146,7 +169,7 @@ export function PassengerModel({
       )}
     </group>
   );
-}
+});
 
 useGLTF.preload(`${glbUrl}/assets/3d/passengers/man2.glb`);
 useGLTF.preload(`${glbUrl}/assets/3d/passengers/man.glb`);

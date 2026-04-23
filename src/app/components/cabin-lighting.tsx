@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { useHelper } from "@react-three/drei"
-import { SpotLightHelper } from "three"
+import { useRef, useMemo } from "react";
+import { useHelper } from "@react-three/drei";
+import { SpotLightHelper } from "three";
 
 interface CabinLightingProps {
-  cabinWidth: number
-  cabinLength: number
-  cabinHeight: number
-  rows: number
-  seatsPerRow: number
-  aisleAfter: number
-  debug?: boolean
-  lightMode?: "day" | "night" | "dim"
+  cabinWidth: number;
+  cabinLength: number;
+  cabinHeight: number;
+  rows: number;
+  seatsPerRow: number;
+  aisleAfter: number;
+  debug?: boolean;
+  lightMode?: "day" | "night" | "dim";
 }
 
 export function CabinLighting({
@@ -23,12 +23,13 @@ export function CabinLighting({
   debug = false,
   lightMode = "day",
 }: CabinLightingProps) {
-  const mainLightRef = useRef<any>(null)
+  const mainLightRef = useRef<any>(null);
 
-  const ceilingHeight = cabinHeight - 0.1
-  const rowSpacing = cabinLength / rows
+  const ceilingHeight = cabinHeight - 0.1;
+  const rowSpacing = cabinLength / rows;
 
-  const getLightSettings = () => {
+  // Memoize light settings
+  const lightSettings = useMemo(() => {
     switch (lightMode) {
       case "night":
         return {
@@ -39,7 +40,7 @@ export function CabinLighting({
           pointIntensity: 0.3,
           windowColor: "#0c2461",
           windowIntensity: 0.2,
-        }
+        };
       case "dim":
         return {
           ambient: 0.3,
@@ -49,7 +50,7 @@ export function CabinLighting({
           pointIntensity: 0.5,
           windowColor: "#3c6382",
           windowIntensity: 0.3,
-        }
+        };
       case "day":
       default:
         return {
@@ -60,20 +61,19 @@ export function CabinLighting({
           pointIntensity: 0.6,
           windowColor: "#48dbfb",
           windowIntensity: 0.7,
-        }
+        };
     }
-  }
+  }, [lightMode]);
 
-  const lightSettings = getLightSettings()
+  useHelper(debug && mainLightRef, SpotLightHelper, "white");
 
-  useHelper(debug && mainLightRef, SpotLightHelper, "white")
-
-  const generateOverheadLights = () => {
-    const lights = []
-    const lightRows = Math.ceil(rows / 4)
+  // Memoize overhead lights
+  const overheadLights = useMemo(() => {
+    const lights = [];
+    const lightRows = Math.ceil(rows / 4);
 
     for (let i = 0; i < lightRows; i++) {
-      const zPos = -(i * 4 * rowSpacing + 2 * rowSpacing)
+      const zPos = -(i * 4 * rowSpacing + 2 * rowSpacing);
 
       lights.push(
         <directionalLight
@@ -83,19 +83,20 @@ export function CabinLighting({
           color={lightSettings.pointColor}
           castShadow={false}
         />,
-      )
+      );
     }
 
-    return lights
-  }
+    return lights;
+  }, [rows, rowSpacing, ceilingHeight, lightSettings]);
 
-  const generateWindowLights = () => {
-    const lights = []
-    const windowRows = Math.ceil(rows / 6)
-    const windowHeight = cabinHeight * 0.6
+  // Memoize window lights
+  const windowLights = useMemo(() => {
+    const lights = [];
+    const windowRows = Math.ceil(rows / 6);
+    const windowHeight = cabinHeight * 0.6;
 
     for (let i = 0; i < windowRows; i++) {
-      const zPos = -(i * 6 * rowSpacing + 3 * rowSpacing)
+      const zPos = -(i * 6 * rowSpacing + 3 * rowSpacing);
 
       lights.push(
         <pointLight
@@ -107,11 +108,11 @@ export function CabinLighting({
           decay={2}
           castShadow={false}
         />,
-      )
+      );
     }
 
-    return lights
-  }
+    return lights;
+  }, [cabinWidth, cabinHeight, rows, rowSpacing, lightSettings]);
 
   return (
     <group name="cabin-lighting">
@@ -127,9 +128,9 @@ export function CabinLighting({
         shadow-bias={-0.0005}
       />
 
-      {generateOverheadLights()}
+      {overheadLights}
 
-      {generateWindowLights()}
+      {windowLights}
     </group>
-  )
+  );
 }
