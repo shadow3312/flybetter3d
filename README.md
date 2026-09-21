@@ -80,7 +80,7 @@
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js 18.0 or higher
+- Node.js 20.9 or higher
 - npm or yarn package manager
 
 ### Setup Instructions
@@ -165,47 +165,24 @@ pnpm start
 ## 📁 Project Structure
 
 ```
-airseat-3d/
-├── app/                          # Next.js App Router
-│   ├── globals.css              # Global styles
-│   ├── layout.tsx               # Root layout
-│   └── page.tsx                 # Home page
-├── components/                   # React components
-│   ├── ui/                      # shadcn/ui components
-│   ├── airplane-interior.tsx    # Main 3D cabin component
-│   ├── airplane-model.tsx       # 3D airplane model
-│   ├── airplane-selection.tsx   # Aircraft selection screen
-│   ├── cabin-crew.tsx          # Crew member component
-│   ├── cabin-crew-manager.tsx  # Crew management
-│   ├── cabin-lighting.tsx      # Dynamic lighting system
-│   ├── cabin-walls.tsx         # Cabin structure
-│   ├── first-person-controls.tsx # FPS navigation
-│   ├── flight-ticket.tsx       # Ticket display component
-│   ├── hybrid-controls.tsx     # Hybrid navigation
-│   ├── lighting-controls.tsx   # Lighting UI controls
-│   ├── passenger-manager.tsx   # Passenger system
-│   ├── passenger-npc.tsx       # Individual passenger
-│   ├── reservation-modal.tsx   # Booking modal
-│   ├── seat-grid.tsx          # Seat layout system
-│   └── seat-model.tsx         # Individual seat component
-├── hooks/                       # Custom React hooks
-│   └── use-keyboard-controls.ts # Keyboard input handling
-├── lib/                        # Utilities and services
-│   ├── db/                     # JSON data files
-│   │   ├── aircraft.json       # Aircraft specifications
-│   │   ├── flights.json        # Flight information
-│   │   └── seat-classes.json   # Seat class definitions
-│   ├── data-service.ts         # Data access layer
-│   ├── ticket-generator.ts     # PDF/image generation
-│   ├── types.ts               # TypeScript definitions
-│   └── utils.ts               # Utility functions
-├── public/                     # Static assets
-│   └── assets/
-│       └── 3d/                # 3D models and textures
-├── package.json               # Dependencies and scripts
-├── tailwind.config.ts         # Tailwind configuration
-├── tsconfig.json             # TypeScript configuration
-└── README.md                 # Project documentation
+prisma/                      # schema.prisma, migrations, seed.ts
+src/
+├── app/
+│   ├── page.tsx             # Home (aircraft selection)
+│   ├── flight/[id]/page.tsx # Cabin view ([id] = aircraft id)
+│   └── components/          # Scene + screens (airplane-interior, seat-grid,
+│                            #   controls, lighting, reservation-modal, flight-ticket…)
+├── components/
+│   ├── models/              # GLTF-backed 3D models (airplane, seat, passenger)
+│   └── ui/                  # shadcn/ui components
+├── hooks/                   # use-mobile
+├── lib/
+│   ├── actions.ts           # Server action: createReservation
+│   ├── prisma.ts            # Shared PrismaClient
+│   ├── data/                # data-service.ts + seed JSON (aircraft, flights, seat-classes)
+│   ├── ticket-generator.tsx # PDF/PNG export
+│   ├── types.ts, utils.ts
+└── state/atoms.ts           # Jotai atoms
 ```
 
 ## 🎨 Customization
