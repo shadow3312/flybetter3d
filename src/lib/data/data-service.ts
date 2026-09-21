@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { Passenger } from "../types";
 
-const prisma = new PrismaClient();
 
 export const DataService = {
   getAircraft: async () => {

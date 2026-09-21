@@ -1,8 +1,7 @@
 "use server";
 
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 
 const createReservation = async (
   seatId: string,
